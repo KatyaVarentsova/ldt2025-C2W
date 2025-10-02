@@ -1,0 +1,46 @@
+spring:
+  application:
+    name: ldthackaton
+  docker:
+    compose:
+      enabled: false
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/hackaton_db
+    username: postgres
+    password: demopass
+    driver-class-name: org.postgresql.Driver
+
+    # Для больших объемов данных настройте пул соединений
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          batch_size: 1000
+          order_inserts: true
+          order_updates: true
+        format_sql: true
+    show-sql: false
+
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    hackaton.ldthackaton: DEBUG
+  file:
+    name: logs/application.log
