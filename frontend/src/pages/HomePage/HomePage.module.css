@@ -1,0 +1,14 @@
+.backButton {
+    padding: 14px 40px;
+    font-size: 1.1rem;
+    background-color: #2563eb;
+    border: none;
+    border-radius: 30px;
+    color: white;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+}
+
+.backButton:hover {
+    background-color: #1e40af;
+}

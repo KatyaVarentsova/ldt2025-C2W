@@ -1,0 +1,135 @@
+.container {
+  position: relative;
+  min-height: 100vh;
+  padding: 40px 60px 100px;
+  background-color: #f9fafc;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+}
+
+.title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #001297;
+}
+
+/* Общие секции */
+.section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+/* Блок диаграммы */
+.chartBox {
+  flex: 2;
+  max-width: 66%;
+  background-color: white;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.chartBox__pieChart {
+  padding: 20px 150px;
+}
+
+/* Блок описания и фильтра */
+.infoBox {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.infoBox p {
+  font-size: 1rem;
+  color: #374151;
+  line-height: 1.5;
+}
+
+/* Форма фильтрации */
+.filterForm {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.filterGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.filterButton {
+  align-self: flex-start;
+  margin-top: 10px;
+}
+
+/* Кнопка возврата */
+.backButton {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 14px 40px;
+  font-size: 1.1rem;
+  background-color: #2563eb;
+  border: none;
+  border-radius: 30px;
+  color: white;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.backButton:hover {
+  background-color: #1e40af;
+}
+
+/* 📱 Адаптивность */
+@media (max-width: 992px) {
+  .section {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .chartBox {
+    max-width: 100%;
+  }
+
+  .infoBox {
+    width: 100%;
+  }
+
+  .filterForm {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .filterButton {
+    align-self: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 20px;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .backButton {
+    width: 80%;
+  }
+}

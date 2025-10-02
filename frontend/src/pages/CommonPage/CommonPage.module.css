@@ -1,0 +1,63 @@
+.commonPage {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 40px 60px;
+  background-color: #f9fafc;
+}
+
+.commonPage__title {
+  text-align: center;
+  font-weight: 700;
+  margin-bottom: 40px;
+  color: #001297;
+  font-size: 2rem;
+}
+
+.commonPage__content {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 40px;
+  flex: 1;
+}
+
+.commonPage__chart {
+  flex: 2;
+  max-width: 66%;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  padding: 20px;
+}
+
+.commonPage__description {
+  flex: 1;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  padding: 20px;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #374151;
+}
+
+.commonPage__button {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 14px 40px;
+  font-size: 1.1rem;
+  background-color: #2563eb;
+  border: none;
+  border-radius: 30px;
+  color: white;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.commonPage__button:hover {
+  background-color: #1e40af;
+}
