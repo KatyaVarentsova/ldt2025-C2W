@@ -32,26 +32,28 @@ public class DashboardService {
                 .collect(Collectors.toList());
     }
 
-    // 2. Статистика по рейтингам
     public List<RatingStatsDto> getRatingStats() {
         List<Review> all = reviewRepository.findAll();
-        Map<YearMonthKey, RatingStatsDto> map = new HashMap<>();
+        Map<String, RatingStatsDto> map = new HashMap<>(); // ключ: "год-месяц"
 
         for (Review review : all) {
-            YearMonthKey key = new YearMonthKey(review.getYear(), review.getMonth());
-            map.computeIfAbsent(key, k -> {
-                RatingStatsDto dto = new RatingStatsDto();
-                dto.setYear(k.year);
-                dto.setMonth(MONTH_NAMES[k.month]);
-                return dto;
-            });
+            String key = review.getYear() + "-" + review.getMonth();
+            RatingStatsDto dto = map.get(key);
 
+            if (dto == null) {
+                dto = new RatingStatsDto();
+                dto.setYear(review.getYear());
+                dto.setMonth(MONTH_NAMES[review.getMonth()]);
+                map.put(key, dto);
+            }
+
+            // Увеличиваем счетчик для соответствующего рейтинга
             switch (review.getRating()) {
-                case 1 -> map.get(key).setStar1(map.get(key).getStar1() + 1);
-                case 2 -> map.get(key).setStar2(map.get(key).getStar2() + 1);
-                case 3 -> map.get(key).setStar3(map.get(key).getStar3() + 1);
-                case 4 -> map.get(key).setStar4(map.get(key).getStar4() + 1);
-                case 5 -> map.get(key).setStar5(map.get(key).getStar5() + 1);
+                case 1 -> dto.setStar1(dto.getStar1() + 1);
+                case 2 -> dto.setStar2(dto.getStar2() + 1);
+                case 3 -> dto.setStar3(dto.getStar3() + 1);
+                case 4 -> dto.setStar4(dto.getStar4() + 1);
+                case 5 -> dto.setStar5(dto.getStar5() + 1);
             }
         }
 
