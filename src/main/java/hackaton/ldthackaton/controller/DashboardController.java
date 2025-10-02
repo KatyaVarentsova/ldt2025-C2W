@@ -8,6 +8,7 @@ import hackaton.ldthackaton.service.DashboardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -30,12 +31,14 @@ public class DashboardController {
     }
 
     @GetMapping("/sentiment-stats")
-    public List<TonalityStatsDto> getSentimentStats() {
-        return dashboardService.getSentimentStatsByMonth();
+    public List<TonalityStatsDto> getSentimentStats(
+            @RequestParam(required = false) String theme) {
+        return dashboardService.getSentimentStatsByMonth(theme);
     }
 
     @GetMapping("/sentiment-total")
-    public TotalTonalityDto getTotalSentiment() {
-        return dashboardService.getTotalSentiment();
+    public TotalTonalityDto getTotalSentiment(
+            @RequestParam(required = false) String theme) {
+        return dashboardService.getTotalSentiment(theme);
     }
 }

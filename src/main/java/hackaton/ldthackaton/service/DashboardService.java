@@ -60,12 +60,20 @@ public class DashboardService {
         return new ArrayList<>(map.values());
     }
 
-    // 3. Статистика по тональности по месяцам
-    public List<TonalityStatsDto> getSentimentStatsByMonth() {
-        List<Review> all = reviewRepository.findAll();
+    // 3. Статистика по тональности по месяцам и по темам
+    public List<TonalityStatsDto> getSentimentStatsByMonth(String theme) {
+        List<Review> reviews;
+
+        // Если тема указана - фильтруем по теме, иначе берем все отзывы
+        if (theme != null && !theme.trim().isEmpty()) {
+            reviews = reviewRepository.findByThemeCategory(theme);
+        } else {
+            reviews = reviewRepository.findAll();
+        }
+
         Map<YearMonthKey, TonalityStatsDto> map = new HashMap<>();
 
-        for (Review review : all) {
+        for (Review review : reviews) {
             YearMonthKey key = new YearMonthKey(review.getYear(), review.getMonth());
             map.computeIfAbsent(key, k -> {
                 TonalityStatsDto dto = new TonalityStatsDto();
@@ -88,11 +96,18 @@ public class DashboardService {
     }
 
     // 4. Общая тональность
-    public TotalTonalityDto getTotalSentiment() {
+    public TotalTonalityDto getTotalSentiment(String theme) {
         TotalTonalityDto dto = new TotalTonalityDto();
-        List<Review> all = reviewRepository.findAll();
+        List<Review> reviews;
 
-        for (Review review : all) {
+        // Если тема указана - фильтруем по теме, иначе берем все отзывы
+        if (theme != null && !theme.trim().isEmpty()) {
+            reviews = reviewRepository.findByThemeCategory(theme);
+        } else {
+            reviews = reviewRepository.findAll();
+        }
+
+        for (Review review : reviews) {
             String tone = review.getTonality().toLowerCase();
             if ("negative".equals(tone)) dto.setNegative(dto.getNegative() + 1);
             else if ("neutral".equals(tone)) dto.setNeutral(dto.getNeutral() + 1);
