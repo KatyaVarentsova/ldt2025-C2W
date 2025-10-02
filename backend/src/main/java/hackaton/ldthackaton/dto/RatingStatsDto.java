@@ -2,13 +2,21 @@ package hackaton.ldthackaton.dto;
 
 public class RatingStatsDto {
     private Integer year;
-    private String month; // "Январь", "Февраль", ...
+    private String month;
+    private int monthNumber;
     private Integer star1 = 0;
     private Integer star2 = 0;
     private Integer star3 = 0;
     private Integer star4 = 0;
     private Integer star5 = 0;
 
+    public int getMonthNumber() {
+        return monthNumber;
+    }
+
+    public void setMonthNumber(int monthNumber) {
+        this.monthNumber = monthNumber;
+    }
 
     public Integer getYear() { return year; }
     public void setYear(Integer year) { this.year = year; }

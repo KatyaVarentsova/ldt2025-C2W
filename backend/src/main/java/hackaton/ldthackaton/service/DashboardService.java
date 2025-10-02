@@ -37,6 +37,11 @@ public class DashboardService {
         Map<String, RatingStatsDto> map = new HashMap<>(); // ключ: "год-месяц"
 
         for (Review review : all) {
+            // Проверяем, попадает ли отзыв в нужный период
+            if (!isInTargetPeriod(review.getYear(), review.getMonth())) {
+                continue;
+            }
+
             String key = review.getYear() + "-" + review.getMonth();
             RatingStatsDto dto = map.get(key);
 
@@ -44,6 +49,7 @@ public class DashboardService {
                 dto = new RatingStatsDto();
                 dto.setYear(review.getYear());
                 dto.setMonth(MONTH_NAMES[review.getMonth()]);
+                dto.setMonthNumber(review.getMonth()); // Устанавливаем числовое значение месяца
                 map.put(key, dto);
             }
 
@@ -57,7 +63,11 @@ public class DashboardService {
             }
         }
 
-        return new ArrayList<>(map.values());
+        // Сортируем по году и месяцу
+        return map.values().stream()
+                .sorted(Comparator.comparing(RatingStatsDto::getYear)
+                        .thenComparing(RatingStatsDto::getMonthNumber))
+                .collect(Collectors.toList());
     }
 
     // 3. Статистика по тональности по месяцам и по темам
@@ -74,11 +84,17 @@ public class DashboardService {
         Map<YearMonthKey, TonalityStatsDto> map = new HashMap<>();
 
         for (Review review : reviews) {
+            // Проверяем, попадает ли отзыв в нужный период
+            if (!isInTargetPeriod(review.getYear(), review.getMonth())) {
+                continue;
+            }
+
             YearMonthKey key = new YearMonthKey(review.getYear(), review.getMonth());
             map.computeIfAbsent(key, k -> {
                 TonalityStatsDto dto = new TonalityStatsDto();
                 dto.setYear(k.year);
                 dto.setMonth(MONTH_NAMES[k.month]);
+                dto.setMonthNumber(k.month); // Устанавливаем числовое значение месяца
                 return dto;
             });
 
@@ -92,7 +108,11 @@ public class DashboardService {
             }
         }
 
-        return new ArrayList<>(map.values());
+        // Сортируем по году и месяцу
+        return map.values().stream()
+                .sorted(Comparator.comparing(TonalityStatsDto::getYear)
+                        .thenComparing(TonalityStatsDto::getMonthNumber))
+                .collect(Collectors.toList());
     }
 
     // 4. Общая тональность
@@ -108,6 +128,11 @@ public class DashboardService {
         }
 
         for (Review review : reviews) {
+            // Проверяем, попадает ли отзыв в нужный период 01.01.2024 - 31.05.2025
+            if (!isInTargetPeriod(review.getYear(), review.getMonth())) {
+                continue;
+            }
+
             String tone = review.getTonality().toLowerCase();
             if ("negative".equals(tone)) dto.setNegative(dto.getNegative() + 1);
             else if ("neutral".equals(tone)) dto.setNeutral(dto.getNeutral() + 1);
@@ -115,6 +140,14 @@ public class DashboardService {
         }
 
         return dto;
+    }
+
+    private boolean isInTargetPeriod(int year, int month) {
+        // Период с января 2024 по май 2025 включительно
+        if (year < 2024) return false;
+        if (year == 2024) return true; // Весь 2024 год подходит
+        if (year == 2025) return month <= 5; // Только январь-май 2025
+        return false; // Все что после мая 2025 не подходит
     }
 
     // Вспомогательный класс для группировки по году и месяцу
@@ -141,4 +174,5 @@ public class DashboardService {
         }
     }
 }
+
 
